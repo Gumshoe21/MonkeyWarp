@@ -92,8 +92,9 @@ Monkey.prototype.draw = function () {
 
 //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
 Monkey.prototype.update = function () {
+	
 	this._updateControls();
-
+	
 	// movement, gravity, friction
 	this.sx *= this.isHit ? 0.99 : 0.8;
 
@@ -195,8 +196,14 @@ Monkey.prototype._updateControls = function () {
 	if (gamepad.btn.B) return this.aim(gamepad);
 
 	// move
-	if (gamepad.btn.right && !gamepad.btn.left)  { this.sx =  SPEED_WALK; this.flipH = false; } // going right
-	if (gamepad.btn.left  && !gamepad.btn.right) { this.sx = -SPEED_WALK; this.flipH = true;  } // going left
+	if (gamepad.btn.right && !gamepad.btn.left)  { this.sx =  SPEED_WALK; this.flipH = false;
+	
+	// console.log("Going right this.x:", this.x);
+	} // going right
+	if (gamepad.btn.left  && !gamepad.btn.right) { this.sx = -SPEED_WALK; this.flipH = true; 
+	
+	// console.log("Going left this.x:", this.x);
+	} // going left
 
 	// door & interactive
 	if (gamepad.btnp.up && !gamepad.btn.right && !gamepad.btn.left && this.onTile.interactive) {
@@ -211,6 +218,8 @@ Monkey.prototype._updateControls = function () {
 //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
 Monkey.prototype.levelCollisions = function () {
 	// round speed
+// 	~~ is effectively a double bit-wise NOT. The second ~ will flip the bits back to their original state. However, the interesting thing about the ~~ operation is that it also applies a floor function to the number.
+// By rounding the speed, when going right, if the value of x happens to be 100.51 for instance, then we get 100 as our target x value. otherwise, the sprite would stop then flicker over to the closest pixel over, which would be 101. if we were going right and landed on 100.49, this wouldn't be a problem, as the monkey would land on pixel 100 then stay there as 100.49 is closer to 100 than it is to 101. However, this isn't always the case, so we must always round down when going right. When going left,
 	this.sx = ~~(this.sx * 100) / 100;
 	this.sy = ~~(this.sy * 100) / 100;
 

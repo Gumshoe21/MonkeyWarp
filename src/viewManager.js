@@ -12,7 +12,7 @@ exports.open = function (id, params) {
 	var view = views[id];
 	if (!view) return console.error('view does not exist', id);
 	exports.view = view;
-	view.open && view.open(params);
+	view.open && view.open(params); // every view has its own open() function
 };
 
 //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
